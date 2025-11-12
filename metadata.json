@@ -1,0 +1,5 @@
+{
+  "name": "Sistem Pemeriksaan Kesehatan Berkala TNI AU",
+  "description": "A web application for managing the periodic health examination reports for the Indonesian Air Force (TNI AU). It facilitates a multi-user workflow where different medical specialists contribute to a single report, which is then finalized and generated as a PDF.",
+  "requestFramePermissions": []
+}
