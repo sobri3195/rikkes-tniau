@@ -15,6 +15,7 @@ const App: React.FC = () => {
   const [selectedExamId, setSelectedExamId] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState<AppPage>('dashboard');
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const { exams, getExamById, updateExam, loading, personLookup, addExamAndPerson, error: apiError } = useMockApi();
 
   const handleLogin = useCallback((role: UserRole) => {
@@ -26,6 +27,7 @@ const App: React.FC = () => {
   const handleLogout = useCallback(() => {
     setUserRole(null);
     setSelectedExamId(null);
+    setIsMobileSidebarOpen(false);
   }, []);
 
   const handleSelectExam = useCallback((examId: string) => {
@@ -40,10 +42,19 @@ const App: React.FC = () => {
   const handleNavigate = useCallback((page: AppPage) => {
     setSelectedExamId(null);
     setCurrentPage(page);
+    setIsMobileSidebarOpen(false);
   }, []);
 
   const toggleSidebar = useCallback(() => {
     setIsSidebarCollapsed(prev => !prev);
+  }, []);
+
+  const toggleMobileSidebar = useCallback(() => {
+    setIsMobileSidebarOpen(prev => !prev);
+  }, []);
+
+  const closeMobileSidebar = useCallback(() => {
+    setIsMobileSidebarOpen(false);
   }, []);
 
 
@@ -103,6 +114,14 @@ const App: React.FC = () => {
 
   return (
     <div className="flex h-screen bg-slate-100 font-sans">
+      {isMobileSidebarOpen && (
+        <button
+          type="button"
+          className="fixed inset-0 bg-black/50 z-30 sm:hidden"
+          aria-label="Close sidebar"
+          onClick={closeMobileSidebar}
+        />
+      )}
       <AppSidebar 
         userRole={userRole} 
         onLogout={handleLogout}
@@ -110,8 +129,24 @@ const App: React.FC = () => {
         onNavigate={handleNavigate}
         isCollapsed={isSidebarCollapsed}
         onToggleCollapse={toggleSidebar}
+        isMobileOpen={isMobileSidebarOpen}
+        onCloseMobile={closeMobileSidebar}
       />
       <div className="flex-1 flex flex-col overflow-y-auto">
+        <header className="flex items-center justify-between px-4 py-3 bg-white shadow-sm sm:hidden">
+          <button
+            type="button"
+            onClick={toggleMobileSidebar}
+            className="inline-flex items-center justify-center rounded-md border border-slate-200 p-2 text-slate-600 shadow-sm"
+            aria-label="Open sidebar"
+          >
+            <span className="text-xl">☰</span>
+          </button>
+          <div className="text-right">
+            <p className="text-sm font-semibold text-slate-700">Sistem Rikkes</p>
+            <p className="text-xs text-slate-500">TNI AU</p>
+          </div>
+        </header>
         <main className="flex-1 p-4 sm:p-6 lg:p-8">
           <div className="max-w-7xl mx-auto">
             {renderContent()}

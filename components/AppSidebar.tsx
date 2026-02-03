@@ -15,9 +15,11 @@ interface AppSidebarProps {
   onNavigate: (page: AppPage) => void;
   isCollapsed: boolean;
   onToggleCollapse: () => void;
+  isMobileOpen: boolean;
+  onCloseMobile: () => void;
 }
 
-const AppSidebar: React.FC<AppSidebarProps> = ({ userRole, onLogout, currentPage, onNavigate, isCollapsed, onToggleCollapse }) => {
+const AppSidebar: React.FC<AppSidebarProps> = ({ userRole, onLogout, currentPage, onNavigate, isCollapsed, onToggleCollapse, isMobileOpen, onCloseMobile }) => {
   
   const navItemClasses = (page: AppPage) => 
       `w-full flex items-center p-3 rounded-lg font-semibold transition-colors duration-200 group relative ${
@@ -29,7 +31,11 @@ const AppSidebar: React.FC<AppSidebarProps> = ({ userRole, onLogout, currentPage
       }`;
   
   return (
-    <aside className={`bg-tni-au-dark text-white flex-shrink-0 flex flex-col shadow-lg transition-all duration-300 ${isCollapsed ? 'w-20' : 'w-64'}`}>
+    <aside
+      className={`bg-tni-au-dark text-white flex-shrink-0 flex flex-col shadow-lg transition-all duration-300 fixed inset-y-0 left-0 z-40 w-64 ${
+        isMobileOpen ? 'translate-x-0' : '-translate-x-full'
+      } sm:static sm:translate-x-0 ${isCollapsed ? 'sm:w-20' : 'sm:w-64'}`}
+    >
       <div className={`p-4 flex items-center border-b border-tni-au ${isCollapsed ? 'justify-center' : ''}`}>
         <Logo className="h-12 w-12 text-white flex-shrink-0" />
         {!isCollapsed && (
@@ -38,6 +44,14 @@ const AppSidebar: React.FC<AppSidebarProps> = ({ userRole, onLogout, currentPage
             <p className="text-xs text-tni-au-light whitespace-nowrap">TNI AU</p>
           </div>
         )}
+        <button
+          type="button"
+          onClick={onCloseMobile}
+          className="ml-auto inline-flex items-center justify-center rounded-md border border-transparent p-2 text-tni-au-light hover:bg-tni-au hover:text-white sm:hidden"
+          aria-label="Close sidebar"
+        >
+          ✕
+        </button>
       </div>
       
       <nav className="flex-1 p-2 mt-4">
