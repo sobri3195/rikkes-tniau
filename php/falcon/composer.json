@@ -1,0 +1,16 @@
+{
+  "name": "rikkes/php-falcon-port",
+  "description": "Falcon API adaptation of the Rikkes mock domain model",
+  "type": "project",
+  "require": {
+    "php": ">=8.1",
+    "phalcon/phalcon": "^5.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "Rikkes\\\\Controllers\\\\": "app/Controllers/",
+      "Rikkes\\\\Domain\\\\": "app/Domain/",
+      "Rikkes\\\\Infrastructure\\\\": "app/Infrastructure/"
+    }
+  }
+}
